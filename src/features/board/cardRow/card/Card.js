@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectVisibleIDs, flipCard, selectMatchedIDs } from '../../boardSlice.js';
+import { selectVisibleIDs, flipCard, selectMatchedIDs, resetCards } from '../../boardSlice.js';
 import { useDispatch } from 'react-redux';
 
 let cardLogo = "https://static-assets.codecademy.com/Courses/Learn-Redux/matching-game/codecademy_logo.png";
@@ -13,6 +13,10 @@ export const Card = ({ id, contents }) => {
   // flip card action
   const flipHandler = (id) => {
     dispatch(flipCard(id));
+  };
+
+  const tryAgainHandler = () => {
+    dispatch(resetCards());
   };
 
   let cardStyle = 'resting'
@@ -38,7 +42,11 @@ export const Card = ({ id, contents }) => {
   // 3rd if statement
   // implement number of flipped cards check
   if (visibleIDs.length === 2) {
-    click = () => {};
+    click = tryAgainHandler;
+  }
+
+  if (visibleIDs.length >= 2 && !matchedIDs.includes(id)) {
+    cardStyle = 'no-match'
   }
 
   return (
